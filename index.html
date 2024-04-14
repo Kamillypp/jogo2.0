@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogo de Perguntas de Matemática</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    #question {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    #answer {
+        padding: 10px;
+        font-size: 18px;
+        border: 2px solid #ccc; /* Adiciona uma borda cinza */
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    #submit {
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+    }
+    #submit:hover {
+        background-color: #0056b3;
+    }
+    .correct {
+        border: 2px solid green; /* Muda a borda para verde quando correto */
+    }
+    .incorrect {
+        border: 2px solid red; /* Muda a borda para vermelho quando incorreto */
+    }
+</style>
+</head>
+<body>
+    <h1>Jogo de Perguntas de Matemática</h1>
+    <p>Responda às perguntas abaixo:</p>
+    <p id="question"></p>
+    <input type="number" id="answer">
+    <button id="submit" onclick="checkAnswer()">Verificar</button>
+
+    <script>
+        // Função para gerar uma pergunta de soma, subtração ou multiplicação aleatória com números até 50
+        function generateQuestion() {
+            const num1 = Math.floor(Math.random() * 51); // Número aleatório entre 0 e 50
+            const num2 = Math.floor(Math.random() * 51); // Número aleatório entre 0 e 50
+            const operator = Math.floor(Math.random() * 3); // 0: soma, 1: subtração, 2: multiplicação
+            let question;
+            switch (operator) {
+                case 0:
+                    question = `${num1} + ${num2}`;
+                    break;
+                case 1:
+                    question = `${num1} - ${num2}`;
+                    break;
+                case 2:
+                    question = `${num1} × ${num2}`; // Substitui o '*' por '×' para representar a multiplicação
+                    break;
+            }
+            return question;
+        }
+
+        // Função para verificar a resposta
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById("answer").value);
+            const question = document.getElementById("question").innerText;
+            const numbers = question.split(" ");
+            const num1 = parseInt(numbers[0]);
+            const num2 = parseInt(numbers[2]);
+            let correctAnswer;
+            if (question.includes("+")) {
+                correctAnswer = num1 + num2;
+            } else if (question.includes("-")) {
+                correctAnswer = num1 - num2;
+            } else if (question.includes("×")) {
+                correctAnswer = num1 * num2;
+            }
+            if (userAnswer === correctAnswer) {
+                document.getElementById("answer").classList.remove("incorrect"); // Remove a classe "incorrect"
+                document.getElementById("answer").classList.add("correct"); // Adiciona a classe "correct"
+                alert("Resposta correta!");
+            } else {
+                document.getElementById("answer").classList.remove("correct"); // Remove a classe "correct"
+                document.getElementById("answer").classList.add("incorrect"); // Adiciona a classe "incorrect"
+                alert("Resposta incorreta. Tente novamente!");
+            }
+            location.reload(); // Recarrega a página
+        }
+
+        // Inicialização do jogo
+        document.getElementById("question").innerText = generateQuestion();
+    </script>
+</body>
+</html>
